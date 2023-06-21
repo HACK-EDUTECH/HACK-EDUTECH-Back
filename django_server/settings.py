@@ -38,7 +38,11 @@ SECRET_KEY = secret_key
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "https://port-0-hack-edutech-back-7xwyjq992llj1al6zx.sel4.cloudtype.app/",
+    "127.0.0.1",
+    "localhost",
+]
 
 
 # Application definition
