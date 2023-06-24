@@ -33,4 +33,8 @@ def index(request):
 
         return HttpResponseRedirect("/")
 
-    return render(request, "data_input/main.html")
+    pyreResponse = database.child("data_table").get()
+    data = pyreResponse.val()
+    # for v in data.items():
+    #     print(v)
+    return render(request, "data_input/main.html", data)

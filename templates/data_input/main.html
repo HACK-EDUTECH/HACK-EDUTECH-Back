@@ -1,15 +1,29 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends 'base.html' %} {% block content %} {% load custom_tags %}
 <div class="container my-3">
-    <div class="row">
-        <h1 class="text-center"> Data input </h1>
-    </div>
-    <div class="row">
-        <form enctype="multipart/form-data" method="post">
-            <input name="data" type="file" accept=".xlsx" class="form-control my-3">
-            <button class="btn btn-primary">업로드</button>
-        </form>
-    </div>
-    
+  <div class="row">
+    <h1 class="text-center">Data input</h1>
+  </div>
+  <div class="row">
+    <form enctype="multipart/form-data" method="post">
+      <input name="data" type="file" accept=".xlsx" class="form-control my-3" />
+      <button class="btn btn-primary">업로드</button>
+    </form>
+  </div>
+  <div class="row mt-5">
+    <h1 class="text-center">Data</h1>
+  </div>
+  <div class="row text-center">
+    {% for field in schema.fields %}
+    <div class="col h5">{{ field.name }}</div>
+    {% endfor %}
+  </div>
+  <hr />
+  {% for r in data %}
+  <div class="row">
+    {% for field in schema.fields %}
+    <div class="col">{{ r|key:field.name }}</div>
+    {% endfor %}
+  </div>
+  {% endfor %}
 </div>
 {% endblock %}
