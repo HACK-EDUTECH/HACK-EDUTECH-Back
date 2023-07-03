@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "data_input",    
+    "data_input",
+    "openai_api",
 ]
 
 MIDDLEWARE = [

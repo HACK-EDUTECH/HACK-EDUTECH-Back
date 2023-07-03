@@ -14,11 +14,11 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
 from django.urls import path, include
+from . import views
 
+app_name="openai_api"
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("", include("data_input.urls")),
-    path("api/", include("openai_api.urls")),
+    path("", views.index, name="index"),
+    path("step3/<str:uuid>/chapter/<int:chapter_no>", views.step3, name="step3"),
 ]
