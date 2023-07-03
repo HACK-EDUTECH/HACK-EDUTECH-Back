@@ -26,7 +26,19 @@ jobs:
             options:
               env:
                 - name: DJANGO_SECRET
-                  value: 5xeuu%71e@wu=#f@^xs6fp0d$adc@c7dvk@8-gfb%0r@ynpe*-
+                  value: DJANGO_SECRET
+                - name: FIREBASE_API_KEY
+                  secret: FIREBASE_API_KEY
+                - name: FIREBASE_AUTO_DOMAIN
+                  secret: FIREBASE_AUTO_DOMAIN
+                - name: FIREBASE_STORAGE_BUCKET
+                  secret: FIREBASE_STORAGE_BUCKET
+                - name: FIREBASE_URL
+                  secret: FIREBASE_URL
+                - name: OPENAI_ORGANIZATION
+                  secret: OPENAI_ORGANIZATION
+                - name: OPENAI_API_KEY
+                  secret: OPENAI_API_KEY
               ports: 8000
               start: python3 manage.py runserver 0:8000
             context:
