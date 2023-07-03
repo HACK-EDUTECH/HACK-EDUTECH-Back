@@ -35,6 +35,10 @@ jobs:
                   secret: FIREBASE_STORAGE_BUCKET
                 - name: FIREBASE_URL
                   secret: FIREBASE_URL
+                - name: OPENAI_ORGANIZATION
+                  secret: OPENAI_ORGANIZATION
+                - name: OPENAI_API_KEY
+                  secret: OPENAI_API_KEY
               ports: 8000
               start: python3 manage.py runserver 0:8000
             context:
