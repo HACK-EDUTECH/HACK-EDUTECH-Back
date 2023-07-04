@@ -7,9 +7,9 @@ class Senario:
     """
 
     sitation: str = ""
-    grammar: str = [""]
-    expression: str = [""]
-    word: str = [""]
+    grammar: List[str] = [""]
+    expression: List[str] = [""]
+    word: List[str] = [""]
     partner: str = ""
     
     result_format: str = json.dumps({
@@ -35,7 +35,9 @@ class Senario:
         return self.system_content
 
     def get_user_content(self) -> str:
-        return "[format:json string] " + self.result_format + f"""1. situation : {self.sitation}
+        return "[format:json string] " + self.result_format + f"""
+[details]
+1. situation : {self.sitation}
 2. character : "I", [Partner:{self.partner}]
 3. grammar : {", ".join(self.grammar)}
 4. expression : {", ".join(self.expression)}

@@ -95,11 +95,10 @@ def step3(request, uuid, chapter_no):
     del senario["scene"]
     senario["sence_image"] = sence_image
 
-    dialogue_images = []
     for dialogue in senario["dialogue"]:
-        dialogue_images = image_create(dialogue["image_prompt"])
+        dialogue_image = image_create(dialogue["image_prompt"])
         del dialogue["image_prompt"]
-        dialogue["dialogue_images"] = dialogue_images
+        dialogue["dialogue_images"] = dialogue_image
 
     return Response(senario)
 
