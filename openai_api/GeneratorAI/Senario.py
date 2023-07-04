@@ -35,7 +35,7 @@ class Senario:
         return self.system_content
 
     def get_user_content(self) -> str:
-        return f"""1. situation : {self.sitation}
+        return "[format:json string] " + self.result_format + f"""1. situation : {self.sitation}
 2. character : "I", [Partner:{self.partner}]
 3. grammar : {", ".join(self.grammar)}
 4. expression : {", ".join(self.expression)}
