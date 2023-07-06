@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.status import HTTP_500_INTERNAL_SERVER_ERROR
 
-from GeneratorAI.Senario import Senario
+from .GeneratorAI.Senario import Senario
 
 import openai
 import os
@@ -56,7 +56,7 @@ def step3(request, uuid, chapter_no):
     )
     word: str = db.child(uuid).child("word").get()
 
-    senarioAPI = Senario(
+    senario = Senario(
         sitation=sitation,
         partner=partner,
         grammar=grammar,
@@ -70,8 +70,8 @@ def step3(request, uuid, chapter_no):
         # 예문 생성
         try:
             completion = create_ChatCompletion(
-                senarioAPI.get_system_content(),
-                senarioAPI.get_user_content(),
+                senario.get_system_content(),
+                senario.get_user_content(),
             )
         except Exception as e:
             print(e)
@@ -83,7 +83,7 @@ def step3(request, uuid, chapter_no):
 
         # json 문자열 -> json 객체
         try:
-            senario = json.loads(completion.choices[0].message.content)
+            senario_result = json.loads(completion.choices[0].message.content)
         except Exception as e:
             print("Not json")
             if i == 1:
@@ -91,16 +91,16 @@ def step3(request, uuid, chapter_no):
             continue
         break
 
-    sence_image = image_create(senario["scene"])
-    del senario["scene"]
-    senario["sence_image"] = sence_image
+    sence_image = image_create(senario_result["scene"])
+    del senario_result["scene"]
+    senario_result["sence_image"] = sence_image
 
-    for dialogue in senario["dialogue"]:
+    for dialogue in senario_result["dialogue"]:
         dialogue_image = image_create(dialogue["image_prompt"])
         del dialogue["image_prompt"]
         dialogue["dialogue_images"] = dialogue_image
 
-    return Response(senario)
+    return Response(senario_result)
 
 
 def create_ChatCompletion(system_content: str, user_content: str):
