@@ -4,13 +4,14 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.status import HTTP_500_INTERNAL_SERVER_ERROR
 
-from .GeneratorAI.Senario import Senario
+from ..GeneratorAI.Senario import Senario
 
 import openai
 import os
 import json
 import base64
 import pyrebase
+from typing import List
 
 config = {
     "apiKey": os.environ["FIREBASE_API_KEY"],
@@ -44,17 +45,17 @@ def step3(request, uuid, chapter_no):
         .get()
     )
     partner: str = request.GET.partner
-    grammar: str = (
+    grammar: List[str] = (
         db.child("content").child("CHAPTER" + chapter_no).child("grammar").get()
     )
-    expression: str = (
+    expression: List[str] = (
         db.child("content")
         .child("CHAPTER" + chapter_no)
         .child("expression")
         .child(request.GET.sitation)
         .get()
     )
-    word: str = db.child(uuid).child("word").get()
+    word: List[str] = db.child(uuid).child("word").get()
 
     senario = Senario(
         sitation=sitation,

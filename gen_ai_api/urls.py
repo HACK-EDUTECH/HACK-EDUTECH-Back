@@ -15,10 +15,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path, include
-from . import views
+from .views import openai, character_gen_ai
 
-app_name="openai_api"
+app_name="gen_ai_api"
 urlpatterns = [
-    path("", views.index, name="index"),
-    path("step3/<str:uuid>/chapter/<int:chapter_no>", views.step3, name="step3"),
+    path("", openai.index, name="index"),
+    path("step3/<str:uuid>/chapter/<int:chapter_no>", openai.step3, name="step3"),
+    path("character/<str:uuid>", character_gen_ai.gen_character, name="gen_character"),
 ]

@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "data_input",
-    "openai_api",
+    "gen_ai_api",
 ]
 
 MIDDLEWARE = [
