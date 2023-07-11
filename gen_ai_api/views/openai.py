@@ -104,9 +104,9 @@ def step3(request, uuid: str, chapter_no: str):
     senario_result["sence_image"] = sence_image
 
     for dialogue in senario_result["dialogue"]:
-        dialogue_image = image_create(dialogue["image_prompt"])
+        # dialogue_image = image_create(dialogue["image_prompt"])
         del dialogue["image_prompt"]
-        dialogue["dialogue_images"] = dialogue_image
+        # dialogue["dialogue_images"] = dialogue_image
 
     return Response(senario_result)
 
