@@ -20,6 +20,7 @@ from .views import openai, character_gen_ai
 app_name="gen_ai_api"
 urlpatterns = [
     path("", openai.index, name="index"),
-    path("step3/<str:uuid>/chapter/<int:chapter_no>", openai.step3, name="step3"),
+    path("step3/<str:uuid>/chapter/<str:chapter_no>/", openai.step3, name="step3"),
     path("character/<str:uuid>", character_gen_ai.gen_character, name="gen_character"),
+    path("memoryroom/<str:uuid>", character_gen_ai.gen_character, name="gen_character"),
 ]

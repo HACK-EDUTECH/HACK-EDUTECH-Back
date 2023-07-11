@@ -26,10 +26,12 @@ db = firebase.database()
 storage = firebase.storage()
 
 
-@api_view(["POST"])
-def gen_character(request, uuid):
-    url: str = os.environ["SD_AI_API"] + "/character/"
-    data: Dict = {"prompt": request.POST}
+def gen_memoryroom(request, uuid):
+    url: str = os.environ["SD_AI_API"] + "/memoryroom/"
+    data: Dict = {
+        "left_prompt": request.POST.left_prompt,
+        "right_prompt": request.POST.right_prompt,
+    }
     try:
         character_b64 = requests.post(url=url, json=data)
         character_image = base64.b64decode(character_b64)
@@ -38,10 +40,12 @@ def gen_character(request, uuid):
         with open("temp.jpg", "wb") as f:
             f.write(character_image)
 
-        image_path: str = f"/image/{uuid}/character-{datetime.timestamp(datetime.now())}.jpg"
+        image_path: str = (
+            f"/image/{uuid}/memoryroom-{datetime.timestamp(datetime.now())}.jpg"
+        )
         storage.child(image_path).put("temp.jpg")
 
-        db.child("USER_TABLE").child(uuid).update({"character_url": image_path})
+        db.child("USER_TABLE").child(uuid).update({"memoryroom_url": image_path})
     except Exception as e:
         return Response(
             "Generating character fail", status=HTTP_500_INTERNAL_SERVER_ERROR

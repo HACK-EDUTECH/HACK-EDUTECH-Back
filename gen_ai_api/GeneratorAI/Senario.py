@@ -6,7 +6,7 @@ class Senario:
     system_content: str = """Write a senario for middle school stduents with following [details]
     """
 
-    sitation: str = ""
+    situation: str = ""
     grammar: List[str] = [""]
     expression: List[str] = [""]
     word: List[str] = [""]
@@ -24,8 +24,8 @@ class Senario:
         ],
     })
 
-    def __init__(self, sitation: str, grammar: List[str], expression: List[str], word: List[str], partner: str) -> None:
-        self.sitation = sitation
+    def __init__(self, situation: str, grammar: List[str], expression: List[str], word: List[str], partner: str) -> None:
+        self.situation = situation
         self.grammar = grammar
         self.expression = expression
         self.word = word
@@ -37,7 +37,7 @@ class Senario:
     def get_user_content(self) -> str:
         return "[format:json string] " + self.result_format + f"""
 [details]
-1. situation : {self.sitation}
+1. situation : {self.situation}
 2. character : "I", [Partner:{self.partner}]
 3. grammar : {", ".join(self.grammar)}
 4. expression : {", ".join(self.expression)}

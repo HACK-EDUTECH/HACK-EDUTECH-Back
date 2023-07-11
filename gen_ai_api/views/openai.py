@@ -28,6 +28,9 @@ organization = os.environ["OPENAI_ORGANIZATION"]
 openai.organization = organization
 openai.api_key = api_key
 
+data_table_name = "DATA_TABLE"
+user_table_name = "USER_TABLE"
+
 
 # Create your views here.
 @api_view(["GET"])
@@ -36,34 +39,42 @@ def index(request):
 
 
 @api_view(["GET"])
-def step3(request, uuid, chapter_no):
-    sitation: str = (
-        db.child("content")
+def step3(request, uuid: str, chapter_no: str):
+    print(request.GET)
+    selected_situation: str = request.GET["situation"]
+    if selected_situation != "b":
+        selected_situation = "a"
+    situation_info = (
+        db.child(data_table_name)
         .child("CHAPTER" + chapter_no)
-        .child("sitation")
-        .child(request.GET.sitation)
-        .get()
+        .child("situation")
+        .child(selected_situation)
+        .get().val()
     )
-    partner: str = request.GET.partner
+    
+    situation_description: str = situation_info.get("description")
+    partner: str = request.GET["partner"]
     grammar: List[str] = (
-        db.child("content").child("CHAPTER" + chapter_no).child("grammar").get()
+        db.child(data_table_name).child("CHAPTER" + chapter_no).child("grammar").get().val()
     )
-    expression: List[str] = (
-        db.child("content")
+    expression: List[str] = situation_info.get("expression")
+
+    word: List[str] = (
+        db.child(user_table_name)
+        .child(uuid)
         .child("CHAPTER" + chapter_no)
-        .child("expression")
-        .child(request.GET.sitation)
-        .get()
+        .child("STEP2")
+        .get().val()
     )
-    word: List[str] = db.child(uuid).child("word").get()
 
     senario = Senario(
-        sitation=sitation,
+        situation=situation_description,
         partner=partner,
         grammar=grammar,
         expression=expression,
         word=word,
     )
+    # print(senario.get_system_content(), senario.get_user_content())
 
     try_n = 2
 
@@ -91,6 +102,8 @@ def step3(request, uuid, chapter_no):
                 return Response("convert fail", status=HTTP_500_INTERNAL_SERVER_ERROR)
             continue
         break
+
+    print(senario_result)
 
     sence_image = image_create(senario_result["scene"])
     del senario_result["scene"]
@@ -121,11 +134,9 @@ def create_ChatCompletion(system_content: str, user_content: str):
 
 
 def image_create(description: str) -> bytes:
-    sence_image = openai.Image.create(
+    return openai.Image.create(
         prompt=(description + " without person at daytime."),
         n=1,
         size="512x512",
         response_format="b64_json",
     )
-
-    return base64.b64decode(sence_image["data"][0]["b64_json"])
