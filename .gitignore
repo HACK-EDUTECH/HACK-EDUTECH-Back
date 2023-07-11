@@ -1,6 +1,7 @@
 # IDE
 .vscode
 .idea
+temp.jpg
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

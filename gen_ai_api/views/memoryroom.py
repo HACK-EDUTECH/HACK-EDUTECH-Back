@@ -26,28 +26,35 @@ db = firebase.database()
 storage = firebase.storage()
 
 
-def gen_memoryroom(request, uuid):
+@api_view(["GET", "POST"])
+def gen_memoryroom(request, uuid, chapter_no):
     url: str = os.environ["SD_AI_API"] + "/memoryroom/"
-    data: Dict = {
-        "left_prompt": request.POST.left_prompt,
-        "right_prompt": request.POST.right_prompt,
-    }
-    try:
-        character_b64 = requests.post(url=url, json=data)
-        character_image = base64.b64decode(character_b64)
-
-        # save
-        with open("temp.jpg", "wb") as f:
-            f.write(character_image)
-
-        image_path: str = (
-            f"/image/{uuid}/memoryroom-{datetime.timestamp(datetime.now())}.jpg"
-        )
-        storage.child(image_path).put("temp.jpg")
-
-        db.child("USER_TABLE").child(uuid).update({"memoryroom_url": image_path})
-    except Exception as e:
+    data: Dict = {"prompt": request.GET["place"]}
+    
+    result = requests.post(url=url, json=data)
+    if result.status_code != 200:
         return Response(
-            "Generating character fail", status=HTTP_500_INTERNAL_SERVER_ERROR
+            "Generating memoryroom fail", status=HTTP_500_INTERNAL_SERVER_ERROR
         )
-    return Response("Generating character success")
+    print(result)
+    b64_json = result.json()
+    print(type(b64_json), b64_json.keys())
+    image = base64.b64decode(b64_json["image"])
+
+    # save
+    with open("temp.jpg", "wb") as f:
+        f.write(image)
+
+    image_path: str = f"/image/{uuid}/CHAPTER{chapter_no}/memoryroom-{datetime.timestamp(datetime.now())}.jpg"
+    storage.child(image_path).put("temp.jpg")
+    (
+        db.child("USER_TABLE")
+        .child(uuid)
+        .child("CHAPTER" + chapter_no)
+        .update({"memoryroom_url": image_path})
+    )
+    # except Exception as e:
+    #     return Response(
+    #         "Generating memoryroom fail", status=HTTP_500_INTERNAL_SERVER_ERROR
+    #     )
+    return Response("Generating memoryroom success")

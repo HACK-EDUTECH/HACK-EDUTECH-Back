@@ -15,12 +15,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path, include
-from .views import openai, character_gen_ai
+from .views import openai, character_gen_ai, memoryroom
 
 app_name="gen_ai_api"
 urlpatterns = [
     path("", openai.index, name="index"),
+    
     path("step3/<str:uuid>/chapter/<str:chapter_no>/", openai.step3, name="step3"),
+    
     path("character/<str:uuid>", character_gen_ai.gen_character, name="gen_character"),
-    path("memoryroom/<str:uuid>", character_gen_ai.gen_character, name="gen_character"),
+    
+    path("memoryroom/<str:uuid>/chapter/<str:chapter_no>/", memoryroom.gen_memoryroom, name="gen_character"),
 ]
