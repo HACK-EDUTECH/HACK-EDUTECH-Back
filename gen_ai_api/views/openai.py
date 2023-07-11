@@ -59,13 +59,7 @@ def step3(request, uuid: str, chapter_no: str):
     )
     expression: List[str] = situation_info.get("expression")
 
-    word: List[str] = (
-        db.child(user_table_name)
-        .child(uuid)
-        .child("CHAPTER" + chapter_no)
-        .child("STEP2")
-        .get().val()
-    )
+    word: List[str] = request.GET["words"]
 
     senario = Senario(
         situation=situation_description,
