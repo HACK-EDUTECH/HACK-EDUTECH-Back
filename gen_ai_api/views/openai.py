@@ -128,9 +128,11 @@ def create_ChatCompletion(system_content: str, user_content: str):
 
 
 def image_create(description: str) -> bytes:
-    return openai.Image.create(
+    result = openai.Image.create(
         prompt=(description + " without person at daytime."),
         n=1,
         size="512x512",
         response_format="b64_json",
     )
+    
+    return result["data"][0]["b64_json"]
