@@ -41,7 +41,7 @@ def index(request):
 @api_view(["GET"])
 def step3(request, uuid: str, chapter_no: str):
     print(request.GET)
-    selected_situation: str = request.GET["situation"]
+    selected_situation: str = request.GET.get("situation","").lower()
     if selected_situation != "b":
         selected_situation = "a"
     situation_info = (
